@@ -1,1 +1,90 @@
-mayur
+#include <iostream>
+using namespace std;
+
+const int MAX = 5; // Maximum queue size
+
+class Queue {
+    int a[MAX];      
+    int front, rear; // Indices for front and rear
+
+public:
+    Queue() { front = rear = -1; }
+
+    // Check if queue is empty
+    bool isempty() { return (front == -1 && rear == -1); }
+
+    // Check if queue is full (circular condition)
+    bool isfull() { return ((rear + 1) % MAX == front); }
+
+    // Insert element in queue
+    void enqueue(int value) {
+        if (isfull()) {
+            cout << "Queue is full!\n";
+            return;
+        }
+        if (isempty()) front = rear = 0;
+        else rear = (rear + 1) % MAX;
+
+        a[rear] = value;
+        cout << "Inserted: " << value << "\n";
+    }
+
+    // Delete element from queue
+    void dequeue() {
+        if (isempty()) {
+            cout << "Queue is empty!\n";
+            return;
+        }
+        cout << "Deleted: " << a[front] << "\n";
+        if (front == rear) front = rear = -1; // Only one element
+        else front = (front + 1) % MAX;
+    }
+
+    // Display queue elements
+    void display() {
+        if (isempty()) {
+            cout << "Queue is empty!\n";
+            return;
+        }
+        cout << "Queue elements: ";
+        int i = front;
+        while (true) {
+            cout << a[i] << " ";
+            if (i == rear) break;
+            i = (i + 1) % MAX;
+        }
+        cout << "\n";
+    }
+};
+
+// Main menu-driven program
+int main() {
+    Queue q;
+    int choice, value;
+
+    do {
+        cout << "\n1.Enqueue  2.Dequeue  3.Display  4.Exit\nEnter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter value: ";
+                cin >> value;
+                q.enqueue(value);
+                break;
+            case 2:
+                q.dequeue();
+                break;
+            case 3:
+                q.display();
+                break;
+            case 4:
+                cout << "Exiting...\n";
+                break;
+            default:
+                cout << "Invalid choice!\n";
+        }
+    } while (choice != 4);
+
+    return 0;
+}
